@@ -1,0 +1,47 @@
+{% extends "layout.html" %} 
+
+{% block title %}
+<title>Post anythings</title>
+{% endblock %} 
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+
+            <div class="card shadow-lg">
+                <div class="card-body">
+
+                    <h2 class="text-center mb-4">
+                        {% if form.instance.pk %}
+                            Edit Post
+                        {% else %}
+                            Create Post
+                        {% endif %}
+                    </h2>
+
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button class="btn btn-success w-100 mt-3" type="submit">
+                            Save Post
+                        </button>
+                    </form>
+
+                    <div class="text-center mt-3">
+                        <a href="{% url 'post_list' %}" class="btn btn-outline-secondary btn-sm">
+                            Back
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
