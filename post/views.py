@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
-from post.forms import PostForm, UserRegistrationForm
+from post.forms import PostForm, UserRegistrationForm, SearchForm
 from post.models import Post
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
+from django.db.models import Q
 
 
 # Create your views here.
@@ -13,7 +14,19 @@ def home(request):
 
 def post_list(request):
     allPost = Post.objects.all().order_by("-created_at")
-    return render(request, "post_list.html", {"allPost": allPost})
+    search_form = SearchForm()
+    query = request.GET.get('q', '')
+    
+    if query:
+        allPost = allPost.filter(
+            Q(text__icontains=query) | Q(user__username__icontains=query)
+        )
+    
+    return render(request, "post_list.html", {
+        "allPost": allPost,
+        "search_form": search_form,
+        "query": query
+    })
 
 
 @login_required

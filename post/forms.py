@@ -10,6 +10,19 @@ class PostForm(forms.ModelForm):
         fields = ["text", "image"]
 
 
+class SearchForm(forms.Form):
+    q = forms.CharField(
+        max_length=100,
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control me-2',
+            'type': 'search',
+            'placeholder': 'Search',
+            'aria-label': 'Search'
+        })
+    )
+
+
 class UserRegistrationForm(UserCreationForm):
     email = forms.EmailField(required=True)
     class Meta:
